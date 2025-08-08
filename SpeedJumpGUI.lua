@@ -1,0 +1,117 @@
+local player = game.Players.LocalPlayer
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "StatGui"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+-- Main Frame
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 300, 0, 200)
+frame.Position = UDim2.new(0.5, -150, 0.5, -100)
+frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+frame.BorderSizePixel = 0
+frame.Active = true -- Allow dragging
+frame.Draggable = true
+frame.Parent = screenGui
+
+-- WalkSpeed Label
+local wsLabel = Instance.new("TextLabel")
+wsLabel.Text = "WalkSpeed:"
+wsLabel.Size = UDim2.new(0, 100, 0, 30)
+wsLabel.Position = UDim2.new(0, 10, 0, 20)
+wsLabel.BackgroundTransparency = 1
+wsLabel.TextColor3 = Color3.new(1, 1, 1)
+wsLabel.Font = Enum.Font.SourceSansBold
+wsLabel.TextSize = 18
+wsLabel.Parent = frame
+
+-- WalkSpeed Input
+local wsInput = Instance.new("TextBox")
+wsInput.PlaceholderText = "Enter WalkSpeed"
+wsInput.Text = ""
+wsInput.Size = UDim2.new(0, 150, 0, 30)
+wsInput.Position = UDim2.new(0, 120, 0, 20)
+wsInput.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+wsInput.TextColor3 = Color3.new(1, 1, 1)
+wsInput.Font = Enum.Font.SourceSans
+wsInput.TextSize = 18
+wsInput.ClearTextOnFocus = false
+wsInput.Parent = frame
+
+-- JumpPower Label
+local jpLabel = Instance.new("TextLabel")
+jpLabel.Text = "JumpPower:"
+jpLabel.Size = UDim2.new(0, 100, 0, 30)
+jpLabel.Position = UDim2.new(0, 10, 0, 70)
+jpLabel.BackgroundTransparency = 1
+jpLabel.TextColor3 = Color3.new(1, 1, 1)
+jpLabel.Font = Enum.Font.SourceSansBold
+jpLabel.TextSize = 18
+jpLabel.Parent = frame
+
+-- JumpPower Input
+local jpInput = Instance.new("TextBox")
+jpInput.PlaceholderText = "Enter JumpPower"
+jpInput.Text = ""
+jpInput.Size = UDim2.new(0, 150, 0, 30)
+jpInput.Position = UDim2.new(0, 120, 0, 70)
+jpInput.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+jpInput.TextColor3 = Color3.new(1, 1, 1)
+jpInput.Font = Enum.Font.SourceSans
+jpInput.TextSize = 18
+jpInput.ClearTextOnFocus = false
+jpInput.Parent = frame
+
+-- Apply Button
+local applyButton = Instance.new("TextButton")
+applyButton.Text = "Set Stats"
+applyButton.Size = UDim2.new(0, 280, 0, 40)
+applyButton.Position = UDim2.new(0, 10, 0, 130)
+applyButton.BackgroundColor3 = Color3.fromRGB(20, 150, 100)
+applyButton.TextColor3 = Color3.new(1, 1, 1)
+applyButton.Font = Enum.Font.SourceSansBold
+applyButton.TextSize = 20
+applyButton.Parent = frame
+
+-- Stat Lock Values
+local lockedWS = nil
+local lockedJP = nil
+
+-- Lock loop
+game:GetService("RunService").RenderStepped:Connect(function()
+	local char = player.Character
+	if char then
+		local hum = char:FindFirstChildOfClass("Humanoid")
+		if hum and lockedWS and lockedJP then
+			if hum.WalkSpeed ~= lockedWS then
+				hum.WalkSpeed = lockedWS
+			end
+			if hum.JumpPower ~= lockedJP then
+				hum.UseJumpPower = true -- MAKE SURE JumpPower is used
+				hum.JumpPower = lockedJP
+			end
+		end
+	end
+end)
+
+-- Set stats from input
+applyButton.MouseButton1Click:Connect(function()
+	local character = player.Character or player.CharacterAdded:Wait()
+	local humanoid = character:FindFirstChildOfClass("Humanoid")
+
+	if humanoid then
+		local newWS = tonumber(wsInput.Text)
+		local newJP = tonumber(jpInput.Text)
+
+		if newWS and newWS > 0 then
+			lockedWS = newWS
+			humanoid.WalkSpeed = newWS
+		end
+
+		if newJP and newJP > 0 then
+			lockedJP = newJP
+			humanoid.UseJumpPower = true
+			humanoid.JumpPower = newJP
+		end
+	end
+end)
