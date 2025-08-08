@@ -73,23 +73,6 @@ applyButton.Font = Enum.Font.SourceSansBold
 applyButton.TextSize = 20
 applyButton.Parent = frame
 
--- Close (X) Button
-local closeButton = Instance.new("TextButton")
-closeButton.Text = "X"
-closeButton.Size = UDim2.new(0, 30, 0, 30)
-closeButton.Position = UDim2.new(1, -35, 0, 5)
-closeButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
-closeButton.TextColor3 = Color3.new(1, 1, 1)
-closeButton.Font = Enum.Font.SourceSansBold
-closeButton.TextSize = 20
-closeButton.Parent = frame
-
--- Close function
-closeButton.MouseButton1Click:Connect(function()
-	frame.Visible = false
-end)
-
-
 -- Stat Lock Values
 local lockedWS = nil
 local lockedJP = nil
