@@ -1,0 +1,1 @@
+loadstring(game:HttpGet("https://raw.githubusercontent.com/FauzanX07/ROBLOX-SPEED-AND-JUMP-SCRIPT/refs/heads/main/SpeedJumpGUI.lua"))()
